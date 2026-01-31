@@ -2,6 +2,12 @@ class DotMatrixTimer {
     constructor() {
         this.yearEnd = new Date('2026-12-31T23:59:59');
         this.intervalId = null;
+        
+        // Month data for 2026 (not a leap year)
+        this.monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        this.monthNames = ['january', 'february', 'march', 'april', 'may', 'june', 
+                         'july', 'august', 'september', 'october', 'november', 'december'];
+        
         this.init();
     }
 
@@ -14,6 +20,9 @@ class DotMatrixTimer {
     createMatrices() {
         // Create days matrix (365 days in 2026)
         this.createMatrix('daysMatrix', 365, 23, 16);
+        
+        // Create months matrices
+        this.createMonthMatrices();
         
         // Create hours matrix (24 hours)
         this.createMatrix('hoursMatrix', 24, 6, 4);
@@ -42,6 +51,19 @@ class DotMatrixTimer {
         return container;
     }
 
+    createMonthMatrices() {
+        for (let i = 0; i < 12; i++) {
+            const daysInMonth = this.monthDays[i];
+            const monthName = this.monthNames[i];
+            
+            // Calculate optimal grid dimensions for month
+            const cols = Math.ceil(Math.sqrt(daysInMonth));
+            const rows = Math.ceil(daysInMonth / cols);
+            
+            this.createMatrix(`${monthName}Matrix`, daysInMonth, cols, rows);
+        }
+    }
+
     updateTimer() {
         const now = new Date();
         const timeRemaining = this.calculateTimeRemaining(now);
@@ -58,6 +80,10 @@ class DotMatrixTimer {
         
         // Update matrices (all showing elapsed time now)
         this.updateMatrix('daysMatrix', daysPassed, 365);
+        
+        // Update month matrices
+        this.updateMonthMatrices(now);
+        
         this.updateMatrix('hoursMatrix', hoursPassed, 24);
         this.updateMatrix('minutesMatrix', minutesPassed, 60);
         this.updateMatrix('secondsMatrix', secondsPassed, 60);
@@ -124,6 +150,40 @@ class DotMatrixTimer {
                 dot.classList.add('inactive');
             }
         });
+    }
+
+    updateMonthMatrices(now) {
+        const currentMonth = now.getMonth(); // 0-11
+        const currentDay = now.getDate(); // 1-31
+        
+        for (let i = 0; i < 12; i++) {
+            const matrixId = `${this.monthNames[i]}Matrix`;
+            const container = document.getElementById(matrixId);
+            if (!container) continue;
+            
+            const dots = container.querySelectorAll('.dot');
+            
+            dots.forEach((dot, index) => {
+                if (i < currentMonth) {
+                    // Month is fully passed
+                    dot.classList.add('active');
+                    dot.classList.remove('inactive');
+                } else if (i === currentMonth) {
+                    // Current month - show elapsed days
+                    if (index < currentDay) {
+                        dot.classList.add('active');
+                        dot.classList.remove('inactive');
+                    } else {
+                        dot.classList.remove('active');
+                        dot.classList.add('inactive');
+                    }
+                } else {
+                    // Future month
+                    dot.classList.remove('active');
+                    dot.classList.add('inactive');
+                }
+            });
+        }
     }
 
     startTimer() {
