@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+:root {
+    --neon-bg: #00ff41;
+    --neon-glow: #66ff66;
+    --neon-accent: #00cc33;
+    --neon-text: #ffffff;
+}
+
 body {
     font-family: 'Courier New', monospace;
     background-color: #0a0a0a;
@@ -101,8 +108,8 @@ h1 {
     display: block;
     font-size: 3rem;
     font-weight: bold;
-    color: #00ff41;
-    text-shadow: 0 0 20px #00ff41;
+    color: var(--neon-glow);
+    text-shadow: 0 0 20px var(--neon-glow);
     animation: pulse 2s infinite;
 }
 
@@ -193,7 +200,7 @@ main {
     background-color: #1a1a1a;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+    box-shadow: 0 0 30px var(--neon-glow);
 }
 
 #daysMatrix .matrix-container {
@@ -260,8 +267,8 @@ main {
 }
 
 .dot.active {
-    background-color: #00ff41;
-    box-shadow: 0 0 15px #00ff41, inset 0 0 3px rgba(0, 255, 65, 0.3);
+    background-color: var(--neon-bg);
+    box-shadow: 0 0 15px var(--neon-glow), inset 0 0 3px rgba(255, 255, 255, 0.3);
     animation: dotPulse 1s infinite;
 }
 
@@ -304,6 +311,129 @@ main {
     z-index: 10;
 }
 
+/* Color Picker Styles */
+.color-picker-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 2px solid var(--neon-glow);
+    color: var(--neon-glow);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.color-picker-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px var(--neon-glow);
+}
+
+.color-picker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.color-picker-header {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.color-picker-header h3 {
+    color: var(--neon-glow);
+    font-size: 2rem;
+    margin: 0;
+    text-shadow: 0 0 20px var(--neon-glow);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--neon-glow);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.color-swatch {
+    background: rgba(26, 26, 26, 0.8);
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    --swatch-bg: var(--neon-bg);
+    --swatch-glow: var(--neon-glow);
+}
+
+.color-swatch:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px var(--swatch-glow);
+    border-color: var(--swatch-glow);
+}
+
+.color-swatch.active {
+    border-color: var(--swatch-glow);
+    box-shadow: 0 0 20px var(--swatch-glow), inset 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.swatch-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--swatch-bg);
+    margin: 0 auto 10px;
+    box-shadow: 0 0 15px var(--swatch-glow);
+}
+
+.swatch-name {
+    color: var(--neon-glow);
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.color-controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.keyboard-hint {
+    color: #cccccc;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.current-theme {
+    color: var(--neon-glow);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
 /* Fullscreen styles */
 :fullscreen {
     background-color: #0a0a0a;
@@ -322,6 +452,77 @@ main {
     .container {
         padding: 10px;
     }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .time-display {
+        gap: 15px;
+    }
+    
+    .time-unit .value {
+        font-size: 2rem;
+    }
+    
+    .matrix-section h2 {
+        font-size: 1.2rem;
+    }
+    
+    .dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .matrix-container {
+        padding: 15px;
+    }
+    
+    #daysMatrix .matrix {
+        grid-template-columns: repeat(23, 12px);
+        grid-template-rows: repeat(16, 12px);
+    }
+    
+    .months-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .month-container {
+        padding: 10px;
+    }
+    
+    .month-container .dot {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .color-picker-btn {
+        top: 10px;
+        right: 10px;
+        font-size: 1.2rem;
+        padding: 6px 10px;
+    }
+    
+    .color-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        max-width: 400px;
+    }
+    
+    .color-swatch {
+        padding: 10px;
+    }
+    
+    .swatch-preview {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .swatch-name {
+        font-size: 0.7rem;
+    }
+}
     
     h1 {
         font-size: 2rem;
@@ -399,5 +600,28 @@ main {
     .month-container .dot {
         width: 5px;
         height: 5px;
+    }
+    
+    .color-picker-btn {
+        display: none; /* Hide on very small screens */
+    }
+    
+    .color-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        max-width: 250px;
+    }
+    
+    .color-swatch {
+        padding: 8px;
+    }
+    
+    .swatch-preview {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .swatch-name {
+        font-size: 0.6rem;
     }
 }

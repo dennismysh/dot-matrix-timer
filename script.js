@@ -8,13 +8,83 @@ class DotMatrixTimer {
         this.monthNames = ['january', 'february', 'march', 'april', 'may', 'june', 
                          'july', 'august', 'september', 'october', 'november', 'december'];
         
+        // Neon color themes
+        this.neonColors = [
+            { name: 'Electric Blue', bg: '#001eff', glow: '#00aaff', accent: '#0066ff' },
+            { name: 'Hot Pink', bg: '#ff006e', glow: '#ff33cc', accent: '#ff0099' },
+            { name: 'Lime Green', bg: '#39ff14', glow: '#7fff00', accent: '#00cc00' },
+            { name: 'Electric Purple', bg: '#bf00ff', glow: '#ff66ff', accent: '#9933ff' },
+            { name: 'Cyan', bg: '#00ffff', glow: '#66ffff', accent: '#00cccc' },
+            { name: 'Magenta', bg: '#ff00ff', glow: '#ff66ff', accent: '#ff00cc' },
+            { name: 'Yellow', bg: '#ffff00', glow: '#ffff66', accent: '#cccc00' },
+            { name: 'Orange', bg: '#ff9900', glow: '#ffcc00', accent: '#ff6600' },
+            { name: 'Red', bg: '#ff0000', glow: '#ff3333', accent: '#cc0000' },
+            { name: 'White', bg: '#ffffff', glow: '#ffffff', accent: '#cccccc' },
+            { name: 'Ice Blue', bg: '#00ccff', glow: '#66ffff', accent: '#0099ff' },
+            { name: 'Neon Green', bg: '#00ff41', glow: '#66ff66', accent: '#00cc33' } // Current
+        ];
+        
+        this.currentTheme = 0; // Start with Neon Green
+        
         this.init();
     }
 
     init() {
+        this.loadSavedTheme();
         this.createMatrices();
         this.updateTimer();
         this.startTimer();
+        this.createColorPicker();
+    }
+
+    loadSavedTheme() {
+        const savedTheme = localStorage.getItem('timerTheme');
+        if (savedTheme !== null) {
+            this.currentTheme = parseInt(savedTheme);
+        }
+        this.applyTheme(this.currentTheme);
+    }
+
+    applyTheme(themeIndex) {
+        const theme = this.neonColors[themeIndex];
+        if (!theme) return;
+        
+        // Apply theme colors
+        document.documentElement.style.setProperty('--neon-bg', theme.bg);
+        document.documentElement.style.setProperty('--neon-glow', theme.glow);
+        document.documentElement.style.setProperty('--neon-accent', theme.accent);
+        document.documentElement.style.setProperty('--neon-text', '#ffffff');
+        
+        // Update dynamic text content
+        this.updateThemeContent(theme);
+        
+        this.currentTheme = themeIndex;
+        localStorage.setItem('timerTheme', themeIndex);
+    }
+
+    updateThemeContent(theme) {
+        // Update page title
+        document.title = `${theme.name} 2026 Dot Matrix Timer`;
+        
+        // Update header text
+        const h1 = document.querySelector('h1');
+        if (h1) h1.textContent = `${theme.name} 2026 Progress`;
+        
+        // Update progress labels
+        const progressLabel = document.querySelector('.progress-label');
+        const remainingLabel = document.querySelector('.remaining-label');
+        if (progressLabel) progressLabel.textContent = `of 2026 complete`;
+        if (remainingLabel) remainingLabel.textContent = `of 2026 remaining`;
+        
+        // Update month container headers
+        document.querySelectorAll('.month-container h3').forEach((h3, index) => {
+            const monthName = this.monthNames[index];
+            if (monthName) {
+                // Capitalize first letter
+                const displayName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+                h3.textContent = displayName;
+            }
+        });
     }
 
     createMatrices() {
@@ -186,6 +256,58 @@ class DotMatrixTimer {
         }
     }
 
+    createColorPicker() {
+        const header = document.querySelector('header');
+        
+        // Create color picker button
+        const colorPickerBtn = document.createElement('button');
+        colorPickerBtn.className = 'color-picker-btn';
+        colorPickerBtn.innerHTML = '🎨';
+        colorPickerBtn.title = 'Choose Color Theme';
+        colorPickerBtn.onclick = () => this.toggleColorPicker();
+        
+        header.appendChild(colorPickerBtn);
+    }
+
+    toggleColorPicker() {
+        const existingPicker = document.getElementById('colorPicker');
+        if (existingPicker) {
+            existingPicker.remove();
+        } else {
+            this.showColorPicker();
+        }
+    }
+
+    showColorPicker() {
+        const currentTheme = this.neonColors[this.currentTheme];
+        const picker = document.createElement('div');
+        picker.id = 'colorPicker';
+        picker.className = 'color-picker';
+        picker.innerHTML = `
+            <div class="color-picker-header">
+                <h3>${currentTheme.name} Theme Options</h3>
+                <button class="close-btn" onclick="document.getElementById('colorPicker').remove()">✕</button>
+            </div>
+            <div class="color-grid">
+                ${this.neonColors.map((color, index) => `
+                    <div class="color-swatch ${index === this.currentTheme ? 'active' : ''}" 
+                         onclick="window.timer.applyTheme(${index})"
+                         style="--swatch-bg: ${color.bg}; --swatch-glow: ${color.glow};"
+                         title="${color.name}">
+                        <div class="swatch-preview"></div>
+                        <div class="swatch-name">${color.name}</div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="color-controls">
+                <div class="keyboard-hint">Use arrow keys to navigate</div>
+                <div class="current-theme">Active: ${currentTheme.name}</div>
+            </div>
+        `;
+        
+        document.body.appendChild(picker);
+    }
+
     startTimer() {
         // Update every second for smooth animations
         this.intervalId = setInterval(() => {
@@ -203,7 +325,7 @@ class DotMatrixTimer {
 
 // Initialize the timer when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    new DotMatrixTimer();
+    window.timer = new DotMatrixTimer();
 });
 
 // Add interactive features
@@ -241,6 +363,20 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (e.key === 'r' || e.key === 'R') {
             // Reset animation
             location.reload();
+        } else if (e.key === 'ArrowLeft') {
+            // Previous color
+            e.preventDefault();
+            const prevTheme = (this.currentTheme - 1 + this.neonColors.length) % this.neonColors.length;
+            this.applyTheme(prevTheme);
+        } else if (e.key === 'ArrowRight') {
+            // Next color
+            e.preventDefault();
+            const nextTheme = (this.currentTheme + 1) % this.neonColors.length;
+            this.applyTheme(nextTheme);
+        } else if (e.key === 'Escape') {
+            // Close color picker
+            const picker = document.getElementById('colorPicker');
+            if (picker) picker.remove();
         }
     });
     
