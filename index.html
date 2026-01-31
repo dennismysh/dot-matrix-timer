@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Dot Matrix Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>2026 Progress</h1>
+            <div class="year-progress" id="yearProgress">
+                <span class="progress-value">0.0%</span>
+                <span class="progress-label">of 2026 complete</span>
+            </div>
+            <div class="year-progress" id="yearRemaining">
+                <span class="remaining-value">0.0%</span>
+                <span class="remaining-label">of 2026 remaining</span>
+            </div>
+            <div class="time-display" id="elapsedTimer">
+                <div class="time-unit">
+                    <span class="value" id="elapsedDays">0</span>
+                    <span class="label">Days Elapsed</span>
+                </div>
+                <div class="time-unit">
+                    <span class="value" id="elapsedHours">0</span>
+                    <span class="label">Hours Elapsed</span>
+                </div>
+                <div class="time-unit">
+                    <span class="value" id="elapsedMinutes">0</span>
+                    <span class="label">Minutes Elapsed</span>
+                </div>
+                <div class="time-unit">
+                    <span class="value" id="elapsedSeconds">0</span>
+                    <span class="label">Seconds Elapsed</span>
+                </div>
+            </div>
+            <div class="time-display" id="timeDisplay">
+                <div class="time-unit">
+                    <span class="value" id="days">0</span>
+                    <span class="label">Days Remaining</span>
+                </div>
+                <div class="time-unit">
+                    <span class="value" id="hours">0</span>
+                    <span class="label">Hours Remaining</span>
+                </div>
+                <div class="time-unit">
+                    <span class="value" id="minutes">0</span>
+                    <span class="label">Minutes Remaining</span>
+                </div>
+                <div class="time-unit">
+                    <span class="value" id="seconds">0</span>
+                    <span class="label">Seconds Remaining</span>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <div class="matrix-section">
+                <h2>Days Progress in 2026</h2>
+                <div class="matrix-container" id="daysMatrix"></div>
+            </div>
+            
+            <div class="matrix-section">
+                <h2>Hours Passed Today</h2>
+                <div class="matrix-container" id="hoursMatrix"></div>
+            </div>
+            
+            <div class="matrix-section">
+                <h2>Minutes Passed This Hour</h2>
+                <div class="matrix-container" id="minutesMatrix"></div>
+            </div>
+            
+            <div class="matrix-section">
+                <h2>Seconds Passed This Minute</h2>
+                <div class="matrix-container" id="secondsMatrix"></div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
