@@ -341,11 +341,6 @@ class DotMatrixTimer {
 // Initialize the timer when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     window.timer = new DotMatrixTimer();
-});
-
-// Add interactive features
-document.addEventListener('DOMContentLoaded', () => {
-    const timer = new DotMatrixTimer();
     
     // Add click interaction to individual dots
     document.addEventListener('click', (e) => {
