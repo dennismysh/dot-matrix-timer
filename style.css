@@ -39,7 +39,7 @@ h1 {
     text-transform: uppercase;
     letter-spacing: 3px;
     color: #ffffff;
-    text-shadow: 0 0 10px #00ff41;
+    text-shadow: 0 0 10px var(--neon-glow);
 }
 
 .year-progress {
@@ -55,16 +55,16 @@ h1 {
 .progress-value {
     display: block;
     font-weight: bold;
-    color: #00ff41;
-    text-shadow: 0 0 15px #00ff41;
+    color: var(--neon-glow);
+    text-shadow: 0 0 15px var(--neon-glow);
     animation: pulse 2s infinite;
 }
 
 .remaining-value {
     display: block;
     font-weight: bold;
-    color: #ff6b35;
-    text-shadow: 0 0 15px #ff6b35;
+    color: var(--neon-accent);
+    text-shadow: 0 0 15px var(--neon-accent);
     animation: pulse 2s infinite;
 }
 
@@ -150,7 +150,7 @@ main {
 .months-section h2 {
     font-size: 1.5rem;
     margin-bottom: 30px;
-    color: #ffffff;
+    color: var(--neon-glow);
     text-transform: uppercase;
     letter-spacing: 2px;
     text-align: center;
@@ -177,7 +177,7 @@ main {
 .month-container h3 {
     font-size: 1.1rem;
     margin-bottom: 15px;
-    color: #00ff41;
+    color: var(--neon-glow);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -340,6 +340,7 @@ main {
     background: rgba(0, 0, 0, 0.9);
     z-index: 1000;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -348,6 +349,7 @@ main {
     text-align: center;
     margin-bottom: 20px;
     position: relative;
+    padding-top: 30px;
 }
 
 .color-picker-header h3 {
@@ -359,14 +361,16 @@ main {
 
 .close-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
+    top: 20px;
+    right: -60px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--neon-glow);
     color: var(--neon-glow);
     font-size: 1.5rem;
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    z-index: 10;
 }
 
 .color-grid {
@@ -449,8 +453,10 @@ main {
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .container {
-        padding: 10px;
+    .month-container h3 {
+        font-size: 1rem;
+        color: var(--neon-glow);
+        text-shadow: 0 0 10px var(--neon-glow);
     }
     
     h1 {
@@ -593,9 +599,14 @@ main {
         gap: 10px;
     }
     
-    .month-container h3 {
-        font-size: 1rem;
-    }
+.month-container h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: var(--neon-glow);
+    text-shadow: 0 0 10px var(--neon-glow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
     
     .month-container .dot {
         width: 5px;

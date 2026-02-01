@@ -24,7 +24,7 @@ class DotMatrixTimer {
             { name: 'Neon Green', bg: '#00ff41', glow: '#66ff66', accent: '#00cc33' } // Current
         ];
         
-        this.currentTheme = 0; // Start with Neon Green
+        this.currentTheme = 11; // Start with Neon Green (index 11)
         
         this.init();
     }
@@ -48,27 +48,44 @@ class DotMatrixTimer {
     applyTheme(themeIndex) {
         const theme = this.neonColors[themeIndex];
         if (!theme) return;
-        
+
         // Apply theme colors
         document.documentElement.style.setProperty('--neon-bg', theme.bg);
         document.documentElement.style.setProperty('--neon-glow', theme.glow);
         document.documentElement.style.setProperty('--neon-accent', theme.accent);
         document.documentElement.style.setProperty('--neon-text', '#ffffff');
-        
+
         // Update dynamic text content
         this.updateThemeContent(theme);
-        
+
         this.currentTheme = themeIndex;
         localStorage.setItem('timerTheme', themeIndex);
+
+        // Update color picker active state if visible
+        if (document.getElementById('colorPicker')) {
+            const swatches = document.querySelectorAll('.color-swatch');
+            swatches.forEach((swatch, index) => {
+                if (index === this.currentTheme) {
+                    swatch.classList.add('active');
+                } else {
+                    swatch.classList.remove('active');
+                }
+            });
+            // Update the active theme text
+            const currentThemeEl = document.querySelector('.current-theme');
+            if (currentThemeEl) {
+                currentThemeEl.textContent = `Active: ${theme.name}`;
+            }
+        }
     }
 
     updateThemeContent(theme) {
         // Update page title
-        document.title = `${theme.name} 2026 Dot Matrix Timer`;
-        
+        document.title = `2026 Progress`;
+
         // Update header text
         const h1 = document.querySelector('h1');
-        if (h1) h1.textContent = `${theme.name} 2026 Progress`;
+        if (h1) h1.textContent = `2026 Progress`;
         
         // Update progress labels
         const progressLabel = document.querySelector('.progress-label');
@@ -279,18 +296,17 @@ class DotMatrixTimer {
     }
 
     showColorPicker() {
-        const currentTheme = this.neonColors[this.currentTheme];
         const picker = document.createElement('div');
         picker.id = 'colorPicker';
         picker.className = 'color-picker';
         picker.innerHTML = `
             <div class="color-picker-header">
-                <h3>${currentTheme.name} Theme Options</h3>
+                <h3>Theme Options</h3>
                 <button class="close-btn" onclick="document.getElementById('colorPicker').remove()">✕</button>
             </div>
             <div class="color-grid">
                 ${this.neonColors.map((color, index) => `
-                    <div class="color-swatch ${index === this.currentTheme ? 'active' : ''}" 
+                    <div class="color-swatch ${index === this.currentTheme ? 'active' : ''}"
                          onclick="window.timer.applyTheme(${index})"
                          style="--swatch-bg: ${color.bg}; --swatch-glow: ${color.glow};"
                          title="${color.name}">
@@ -300,11 +316,10 @@ class DotMatrixTimer {
                 `).join('')}
             </div>
             <div class="color-controls">
-                <div class="keyboard-hint">Use arrow keys to navigate</div>
-                <div class="current-theme">Active: ${currentTheme.name}</div>
+                <div class="current-theme">Active: ${this.neonColors[this.currentTheme].name}</div>
             </div>
         `;
-        
+
         document.body.appendChild(picker);
     }
 
