@@ -488,21 +488,26 @@ main {
         grid-template-columns: repeat(23, 12px);
         grid-template-rows: repeat(16, 12px);
     }
-    
+
     .months-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     }
-    
+
     .month-container {
         padding: 10px;
     }
-    
+
+    .month-container h3 {
+        font-size: 0.8rem;
+        margin-bottom: 8px;
+    }
+
     .month-container .dot {
         width: 6px;
         height: 6px;
     }
-    
+
     .color-picker-btn {
         top: 10px;
         right: 10px;
@@ -564,16 +569,21 @@ main {
         grid-template-columns: repeat(23, 12px);
         grid-template-rows: repeat(16, 12px);
     }
-    
+
     .months-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     }
-    
+
     .month-container {
         padding: 10px;
     }
-    
+
+    .month-container h3 {
+        font-size: 0.8rem;
+        margin-bottom: 8px;
+    }
+
     .month-container .dot {
         width: 6px;
         height: 6px;
