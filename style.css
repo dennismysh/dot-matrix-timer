@@ -595,19 +595,19 @@ main {
     }
     
     .months-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
     }
-    
-.month-container h3 {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    color: var(--neon-glow);
-    text-shadow: 0 0 10px var(--neon-glow);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-    
+
+    .month-container {
+        padding: 8px;
+    }
+
+    .month-container h3 {
+        font-size: 0.7rem;
+        margin-bottom: 6px;
+    }
+
     .month-container .dot {
         width: 5px;
         height: 5px;
