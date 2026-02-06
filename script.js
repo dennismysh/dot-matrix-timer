@@ -12,7 +12,7 @@ class DotMatrixTimer {
         this.neonColors = [
             { name: 'Electric Blue', bg: '#001eff', glow: '#00aaff', accent: '#0066ff' },
             { name: 'Hot Pink', bg: '#ff006e', glow: '#ff33cc', accent: '#ff0099' },
-            { name: 'Lime Green', bg: '#39ff14', glow: '#7fff00', accent: '#00cc00' },
+            { name: 'Nebula', bg: '#ff2d8a', glow: '#ff66b8', accent: '#9945ff' },
             { name: 'Electric Purple', bg: '#bf00ff', glow: '#ff66ff', accent: '#9933ff' },
             { name: 'Cyan', bg: '#00ffff', glow: '#66ffff', accent: '#00cccc' },
             { name: 'Magenta', bg: '#ff00ff', glow: '#ff66ff', accent: '#ff00cc' },
