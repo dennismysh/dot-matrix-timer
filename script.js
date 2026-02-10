@@ -25,7 +25,18 @@ class DotMatrixTimer {
         ];
         
         this.currentTheme = 11; // Start with Neon Green (index 11)
-        
+
+        // Font options
+        this.fonts = [
+            { name: 'Courier New', family: "'Courier New', monospace" },
+            { name: 'Pixel Square', family: "'GeistPixel Square', monospace" },
+            { name: 'Pixel Grid', family: "'GeistPixel Grid', monospace" },
+            { name: 'Pixel Circle', family: "'GeistPixel Circle', monospace" },
+            { name: 'Pixel Triangle', family: "'GeistPixel Triangle', monospace" },
+            { name: 'Pixel Line', family: "'GeistPixel Line', monospace" },
+        ];
+        this.currentFont = 0; // Start with Courier New
+
         this.init();
     }
 
@@ -43,6 +54,31 @@ class DotMatrixTimer {
             this.currentTheme = parseInt(savedTheme);
         }
         this.applyTheme(this.currentTheme);
+
+        const savedFont = localStorage.getItem('timerFont');
+        if (savedFont !== null) {
+            this.currentFont = parseInt(savedFont);
+        }
+        this.applyFont(this.currentFont);
+    }
+
+    applyFont(fontIndex) {
+        const font = this.fonts[fontIndex];
+        if (!font) return;
+
+        document.documentElement.style.setProperty('--font-primary', font.family);
+        this.currentFont = fontIndex;
+        localStorage.setItem('timerFont', fontIndex);
+
+        // Update font picker active state if visible
+        const fontSwatches = document.querySelectorAll('.font-swatch');
+        fontSwatches.forEach((swatch, index) => {
+            if (index === this.currentFont) {
+                swatch.classList.add('active');
+            } else {
+                swatch.classList.remove('active');
+            }
+        });
     }
 
     applyTheme(themeIndex) {
@@ -312,6 +348,17 @@ class DotMatrixTimer {
                          title="${color.name}">
                         <div class="swatch-preview"></div>
                         <div class="swatch-name">${color.name}</div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="font-section-label">Font</div>
+            <div class="font-grid">
+                ${this.fonts.map((font, index) => `
+                    <div class="font-swatch ${index === this.currentFont ? 'active' : ''}"
+                         onclick="window.timer.applyFont(${index})"
+                         title="${font.name}">
+                        <div class="font-preview" style="font-family: ${font.family}">2026</div>
+                        <div class="font-name">${font.name}</div>
                     </div>
                 `).join('')}
             </div>
