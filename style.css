@@ -543,6 +543,18 @@ main {
 
 .geist-pixel-active .time-unit .value {
     font-size: 3rem;
+    font-weight: normal;
+    text-shadow: 0 0 4px var(--neon-glow);
+}
+
+.geist-pixel-active .progress-value,
+.geist-pixel-active .remaining-value {
+    font-weight: normal;
+    text-shadow: 0 0 4px var(--neon-glow);
+}
+
+.geist-pixel-active .time-display:first-of-type .time-unit .value {
+    text-shadow: 0 0 4px #ff6b35;
 }
 
 .geist-pixel-active .year-progress {
