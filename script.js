@@ -70,6 +70,13 @@ class DotMatrixTimer {
         this.currentFont = fontIndex;
         localStorage.setItem('timerFont', fontIndex);
 
+        // Toggle pixel font rendering class
+        if (font.family.includes('GeistPixel')) {
+            document.documentElement.classList.add('geist-pixel-active');
+        } else {
+            document.documentElement.classList.remove('geist-pixel-active');
+        }
+
         // Update font picker active state if visible
         const fontSwatches = document.querySelectorAll('.font-swatch');
         fontSwatches.forEach((swatch, index) => {
