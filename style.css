@@ -1,3 +1,33 @@
+@font-face {
+    font-family: 'GeistPixel Square';
+    src: url('fonts/GeistPixel-Square.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GeistPixel Grid';
+    src: url('fonts/GeistPixel-Grid.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GeistPixel Circle';
+    src: url('fonts/GeistPixel-Circle.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GeistPixel Triangle';
+    src: url('fonts/GeistPixel-Triangle.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GeistPixel Line';
+    src: url('fonts/GeistPixel-Line.woff2') format('woff2');
+    font-display: swap;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -9,10 +39,11 @@
     --neon-glow: #66ff66;
     --neon-accent: #00cc33;
     --neon-text: #ffffff;
+    --font-primary: 'Courier New', monospace;
 }
 
 body {
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-primary);
     background-color: #0a0a0a;
     color: #ffffff;
     min-height: 100vh;
@@ -438,6 +469,60 @@ main {
     font-weight: bold;
 }
 
+/* Font Picker Styles */
+.font-section-label {
+    color: var(--neon-glow);
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px var(--neon-glow);
+}
+
+.font-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.font-swatch {
+    background: rgba(26, 26, 26, 0.8);
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.font-swatch:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px var(--neon-glow);
+    border-color: var(--neon-glow);
+}
+
+.font-swatch.active {
+    border-color: var(--neon-glow);
+    box-shadow: 0 0 20px var(--neon-glow), inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.font-preview {
+    color: var(--neon-glow);
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.font-name {
+    color: #cccccc;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 /* Fullscreen styles */
 :fullscreen {
     background-color: #0a0a0a;
@@ -533,8 +618,18 @@ main {
     .swatch-name {
         font-size: 0.7rem;
     }
+
+    .font-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        max-width: 400px;
+    }
+
+    .font-preview {
+        font-size: 1.1rem;
+    }
 }
-    
+
     h1 {
         font-size: 2rem;
     }
@@ -643,6 +738,20 @@ main {
     }
     
     .swatch-name {
+        font-size: 0.6rem;
+    }
+
+    .font-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        max-width: 250px;
+    }
+
+    .font-preview {
+        font-size: 1rem;
+    }
+
+    .font-name {
         font-size: 0.6rem;
     }
 }
