@@ -538,7 +538,9 @@ main {
 
 .geist-pixel-active h1 {
     font-size: 3rem;
+    font-weight: normal;
     letter-spacing: 6px;
+    text-shadow: 0 0 4px var(--neon-glow);
 }
 
 .geist-pixel-active .time-unit .value {
@@ -563,13 +565,35 @@ main {
 
 .geist-pixel-active .matrix-section h2,
 .geist-pixel-active .months-section h2 {
+    font-weight: normal;
     letter-spacing: 4px;
+    text-shadow: 0 0 4px var(--neon-glow);
 }
 
 .geist-pixel-active .time-unit .label,
 .geist-pixel-active .progress-label,
 .geist-pixel-active .remaining-label {
+    font-weight: normal;
     letter-spacing: 2px;
+}
+
+.geist-pixel-active .month-container h3 {
+    font-weight: normal;
+    text-shadow: 0 0 4px var(--neon-glow);
+}
+
+.geist-pixel-active .color-picker-header h3 {
+    font-weight: normal;
+    text-shadow: 0 0 4px var(--neon-glow);
+}
+
+.geist-pixel-active .swatch-name,
+.geist-pixel-active .current-theme {
+    font-weight: normal;
+}
+
+.geist-pixel-active .font-section-label {
+    text-shadow: 0 0 4px var(--neon-glow);
 }
 
 /* Fullscreen styles */
