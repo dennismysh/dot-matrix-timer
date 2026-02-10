@@ -514,6 +514,10 @@ main {
     font-size: 1.4rem;
     margin-bottom: 6px;
     letter-spacing: 1px;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
 }
 
 .font-name {
@@ -521,6 +525,39 @@ main {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+/* GeistPixel font rendering — crisp pixel-perfect display */
+.geist-pixel-active,
+.geist-pixel-active * {
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+}
+
+.geist-pixel-active h1 {
+    font-size: 3rem;
+    letter-spacing: 6px;
+}
+
+.geist-pixel-active .time-unit .value {
+    font-size: 3rem;
+}
+
+.geist-pixel-active .year-progress {
+    font-size: 2rem;
+}
+
+.geist-pixel-active .matrix-section h2,
+.geist-pixel-active .months-section h2 {
+    letter-spacing: 4px;
+}
+
+.geist-pixel-active .time-unit .label,
+.geist-pixel-active .progress-label,
+.geist-pixel-active .remaining-label {
+    letter-spacing: 2px;
 }
 
 /* Fullscreen styles */
