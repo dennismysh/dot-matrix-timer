@@ -11,7 +11,7 @@ class DotMatrixTimer {
         // Neon color themes
         this.neonColors = [
             { name: 'Electric Blue', bg: '#001eff', glow: '#00aaff', accent: '#0066ff' },
-            { name: 'Hot Pink', bg: '#ff006e', glow: '#ff33cc', accent: '#ff0099' },
+            { name: 'Gradient Pulse', bg: '#d946ef', glow: '#e879f9', accent: '#22d3ee', gradient: true },
             { name: 'Nebula', bg: '#ff2d8a', glow: '#ff66b8', accent: '#9945ff' },
             { name: 'Electric Purple', bg: '#bf00ff', glow: '#ff66ff', accent: '#9933ff' },
             { name: 'Cyan', bg: '#00ffff', glow: '#66ffff', accent: '#00cccc' },
@@ -36,6 +36,25 @@ class DotMatrixTimer {
             { name: 'Pixel Line', family: "'GeistPixel Line', monospace" },
         ];
         this.currentFont = 0; // Start with Courier New
+
+        // Gradient pulse animation state
+        this.gradientAnimationId = null;
+        this.gradientTime = 0;
+        this.lastGradientFrame = 0;
+        this.GRADIENT_FPS = 24;
+        this.GRADIENT_CYCLE_SECONDS = 10;
+        // Gradient stops: magenta → hot pink → rose → amber → yellow → lime → emerald → teal → cyan
+        this.gradientStops = [
+            [217, 70, 239],
+            [236, 72, 153],
+            [251, 113, 133],
+            [251, 146, 60],
+            [250, 204, 21],
+            [132, 204, 22],
+            [52, 211, 153],
+            [45, 212, 191],
+            [34, 211, 238]
+        ];
 
         this.init();
     }
@@ -88,7 +107,73 @@ class DotMatrixTimer {
         });
     }
 
+    interpolateGradient(progress) {
+        const stops = this.gradientStops;
+        const numSegments = stops.length - 1;
+        const scaled = progress * numSegments;
+        const i = Math.min(Math.floor(scaled), numSegments - 1);
+        const t = scaled - i;
+        return [
+            Math.round(stops[i][0] + (stops[i + 1][0] - stops[i][0]) * t),
+            Math.round(stops[i][1] + (stops[i + 1][1] - stops[i][1]) * t),
+            Math.round(stops[i][2] + (stops[i + 1][2] - stops[i][2]) * t)
+        ];
+    }
+
+    rgbToHex(r, g, b) {
+        return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+
+    lightenColor(r, g, b, amount) {
+        return [
+            Math.min(255, r + Math.round((255 - r) * amount)),
+            Math.min(255, g + Math.round((255 - g) * amount)),
+            Math.min(255, b + Math.round((255 - b) * amount))
+        ];
+    }
+
+    startGradientPulse() {
+        const frameInterval = 1000 / this.GRADIENT_FPS;
+        const timeStep = 1 / (this.GRADIENT_CYCLE_SECONDS * this.GRADIENT_FPS);
+
+        const animate = (timestamp) => {
+            if (timestamp - this.lastGradientFrame >= frameInterval) {
+                this.lastGradientFrame = timestamp;
+
+                this.gradientTime += timeStep;
+                if (this.gradientTime >= 1) this.gradientTime -= 1;
+
+                // Smooth sine easing: eases at both ends, natural breathing rhythm
+                const progress = (-Math.cos(this.gradientTime * Math.PI * 2) + 1) / 2;
+
+                const [r, g, b] = this.interpolateGradient(progress);
+                const bg = this.rgbToHex(r, g, b);
+                const [gr, gg, gb] = this.lightenColor(r, g, b, 0.35);
+                const glow = this.rgbToHex(gr, gg, gb);
+                const [ar, ag, ab] = this.lightenColor(r, g, b, 0.15);
+                const accent = this.rgbToHex(ar, ag, ab);
+
+                document.documentElement.style.setProperty('--neon-bg', bg);
+                document.documentElement.style.setProperty('--neon-glow', glow);
+                document.documentElement.style.setProperty('--neon-accent', accent);
+            }
+
+            this.gradientAnimationId = requestAnimationFrame(animate);
+        };
+
+        this.gradientAnimationId = requestAnimationFrame(animate);
+    }
+
+    stopGradientPulse() {
+        if (this.gradientAnimationId) {
+            cancelAnimationFrame(this.gradientAnimationId);
+            this.gradientAnimationId = null;
+        }
+    }
+
     applyTheme(themeIndex) {
+        this.stopGradientPulse();
+
         const theme = this.neonColors[themeIndex];
         if (!theme) return;
 
@@ -97,6 +182,10 @@ class DotMatrixTimer {
         document.documentElement.style.setProperty('--neon-glow', theme.glow);
         document.documentElement.style.setProperty('--neon-accent', theme.accent);
         document.documentElement.style.setProperty('--neon-text', '#ffffff');
+
+        if (theme.gradient) {
+            this.startGradientPulse();
+        }
 
         // Update dynamic text content
         this.updateThemeContent(theme);
@@ -348,15 +437,20 @@ class DotMatrixTimer {
                 <button class="close-btn" onclick="document.getElementById('colorPicker').remove()">✕</button>
             </div>
             <div class="color-grid">
-                ${this.neonColors.map((color, index) => `
+                ${this.neonColors.map((color, index) => {
+                    const gradientCSS = this.gradientStops.map(function(s) { return 'rgb(' + s[0] + ',' + s[1] + ',' + s[2] + ')'; }).join(', ');
+                    const previewStyle = color.gradient
+                        ? 'style="background: linear-gradient(135deg, ' + gradientCSS + ');"'
+                        : '';
+                    return `
                     <div class="color-swatch ${index === this.currentTheme ? 'active' : ''}"
                          onclick="window.timer.applyTheme(${index})"
-                         style="--swatch-bg: ${color.bg}; --swatch-glow: ${color.glow};"
+                         style="--swatch-bg: ${color.bg}; --swatch-glow: ${color.gradient ? '#e879f9' : color.glow};"
                          title="${color.name}">
-                        <div class="swatch-preview"></div>
+                        <div class="swatch-preview" ${previewStyle}></div>
                         <div class="swatch-name">${color.name}</div>
-                    </div>
-                `).join('')}
+                    </div>`;
+                }).join('')}
             </div>
             <div class="font-section-label">Font</div>
             <div class="font-grid">
