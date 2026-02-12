@@ -445,7 +445,7 @@ class DotMatrixTimer {
                     return `
                     <div class="color-swatch ${index === this.currentTheme ? 'active' : ''}"
                          onclick="window.timer.applyTheme(${index})"
-                         style="--swatch-bg: ${color.bg}; --swatch-glow: ${color.gradient ? '#e879f9' : color.glow};"
+                         style="--swatch-bg: ${color.bg}; --swatch-glow: ${color.gradient ? 'var(--neon-glow)' : color.glow};"
                          title="${color.name}">
                         <div class="swatch-preview" ${previewStyle}></div>
                         <div class="swatch-name">${color.name}</div>
